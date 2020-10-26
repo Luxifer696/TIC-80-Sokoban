@@ -1,0 +1,306 @@
+--projet laby
+
+ending = false
+
+SonBoutonA = false
+SonBoutonD = false
+	
+x = 8
+y = 8
+
+NumCaisse = 4
+NumGrille = 4
+
+xcaisse = {}
+ycaisse = {}
+xgrille = {}
+ygrille = {}
+
+xcaisse[0] = 16
+ycaisse[0] = 24
+
+xcaisse[1] = 16
+ycaisse[1] = 8
+
+xcaisse[2] = 48
+ycaisse[2] = 8
+
+xcaisse[3] = 48
+ycaisse[3] = 48
+
+xcaisse[4] = 80
+ycaisse[4] = 16
+
+xgrille[0] = 24
+ygrille[0] = 32
+
+xgrille[1] = 88
+ygrille[1] = 32
+
+xgrille[2] = 112
+ygrille[2] = 56
+	
+xgrille[3] = 128
+ygrille[3] = 56
+
+xgrille[4] = 176
+ygrille[4] = 56
+
+bouton1 = false
+bouton2 = false
+bouton3 = false
+bouton4 = false
+bouton5 = false
+
+function CaisseEnHaut(i)
+ for n=0, NumCaisse do
+	  if xcaisse[i] == xcaisse[n] and ycaisse[i]-8 == ycaisse[n] then return true
+	  end
+	end
+	for n=0, NumGrille do
+			if xcaisse[i] == xgrille[n] and ycaisse[i]-8 == ygrille[n] then return true
+	  end
+	end
+	return false
+end
+
+function CaisseEnBas(i)
+ for n=0, NumCaisse do
+	  if xcaisse[i] == xcaisse[n] and ycaisse[i]+8 == ycaisse[n] then return true
+	  end
+	end
+	for n=0, NumGrille do
+			if xcaisse[i] == xgrille[n] and ycaisse[i]+8 == ygrille[n] then return true
+	  end
+	end
+	return false
+end
+
+function CaisseAGauche(i)
+ for n=0, NumCaisse do
+	  if xcaisse[i]-8 == xcaisse[n] and ycaisse[i] == ycaisse[n] then return true
+		 end
+	end
+	for n=0, NumGrille do
+			if xcaisse[i]-8 == xgrille[n] and ycaisse[i] == ygrille[n] then return true
+	  end
+	end	
+	return false
+end
+
+function CaisseADroite(i)
+ for n=0, NumCaisse do
+	  if xcaisse[i]+8 == xcaisse[n] and ycaisse[i] == ycaisse[n] then return true
+		 end
+	end
+	for n=0, NumGrille do
+			if xcaisse[i]+8 == xgrille[n] and ycaisse[i] == ygrille[n] then return true
+	  end
+	end
+	return false
+end
+
+function TIC()
+
+	-- Reset
+	if btn(1) and btn(2) and btn(3) then 
+	 sfx(2)
+		reset() 
+	end
+	
+	-- ActiverDesactiverAide
+	if btn(0) and btn(2) and btn(3) then 
+		if aide == true then aide = false 
+		 else aide = true
+		end
+	end
+
+	-- Up
+ if btnp(0) and mget(x//8,y//8-1) ~= 49 then
+	 for i=0, NumCaisse do
+		 if x - xcaisse[i] == 0 and y - ycaisse[i] == 8 then
+		  if mget(xcaisse[i]//8,ycaisse[i]//8-1) ~= 49 and mget(xcaisse[i]//8,ycaisse[i]//8-1) ~= 113 and CaisseEnHaut(i) == false then
+					ycaisse[i] = ycaisse[i] - 8
+			 else y=y+8
+			 end
+		 end
+		end
+		if bouton2 == false and x==88 and y-8==32 then
+		 y=y+8
+	 end
+		y=y-8
+	end
+	
+	-- Down
+	if btnp(1) and mget(x//8,y//8+1) ~= 49 then 
+	 for i=0, NumCaisse do
+		 if x - xcaisse[i] == 0 and y - ycaisse[i] == -8 then
+		  if mget(xcaisse[i]//8,ycaisse[i]//8+1) ~= 49 and mget(xcaisse[i]//8,ycaisse[i]//8+1) ~= 113 and CaisseEnBas(i) == false then
+			  ycaisse[i] = ycaisse[i] + 8
+			 else 
+				 y=y-8
+			 end
+		 end
+		end
+		
+		if bouton2 == false and x==88 and y+8==32 then
+		 y=y-8
+	 end
+		
+		y=y+8
+	end
+	
+	-- Left
+	if btnp(2) and mget(x//8-1,y//8) ~= 49 then 
+		for i=0, NumCaisse do
+		 if x - xcaisse[i] == 8 and y - ycaisse[i] == 0 then
+				if mget(xcaisse[i]//8-1,ycaisse[i]//8) ~= 49 and mget(xcaisse[i]//8-1,ycaisse[i]//8) ~= 113 and CaisseAGauche(i) == false then
+			  xcaisse[i] = xcaisse[i] - 8
+			 else x=x+8
+			 end
+		 end
+		end
+		x=x-8 
+	end
+	
+	-- Right
+	if btnp(3) and mget(x//8+1,y//8) ~= 49 then 
+	 for i=0, NumCaisse do
+	  if x - xcaisse[i] == -8 and y - ycaisse[i] == 0 then
+		  if mget(xcaisse[i]//8+1,ycaisse[i]//8) ~= 49 and mget(xcaisse[i]//8+1,ycaisse[i]//8) ~= 113 and CaisseADroite(i) == false then
+					xcaisse[i] = xcaisse[i] + 8
+			 else x=x-8
+			 end
+		 end
+		end
+		x=x+8
+	end
+	
+	-- CliqueBouton
+	
+	for i=0, NumCaisse do
+	 if x==8 and y==32 or xcaisse[i]==8 and ycaisse[i]==32 then
+		 bouton1 = true
+			break
+		else
+		 bouton1 = false
+	 end
+	end
+	
+	for i=0, NumCaisse do
+	 if x==72 and y==48 or xcaisse[i]==72 and ycaisse[i]==48 then
+		 bouton2 = true
+			break
+		else
+		 bouton2 = false
+	 end
+	end
+	
+	for i=0, NumCaisse do
+	 if x==8 and y==48 or xcaisse[i]==8 and ycaisse[i]==48 then
+		 bouton3 = true
+			break
+		else
+		 bouton3 = false
+	 end
+	end
+	
+	for i=0, NumCaisse do
+	 if x==88 and y==8 or xcaisse[i]==88 and ycaisse[i]==8 then
+		 bouton4 = true
+			break
+		else
+		 bouton4 = false
+	 end
+	end
+	
+	for i=0, NumCaisse do
+	 if x==152 and y==56 or xcaisse[i]==152 and ycaisse[i]==56 then
+		 bouton5 = true
+			break
+		else
+		 bouton5 = false
+	 end
+	end
+	
+	-- Affichage :
+	
+	if ending == false then
+	 cls(0)
+	 map(0,0)
+	 spr(33,x,y)
+		
+		-- Aide joueur
+
+		print("Use ",122,12,12)
+		print("arrows",144,12,4)
+		print(" to move",180,12,12)
+		print("You're the ",122,20,12)
+		print("green",180,20,5)
+		print("Boxes can be pushed",26,97,12)
+		print("Buttons open grids",26,113,12)
+		print("Reset :",178,97,12)
+		
+		-- Caisse
+	
+	 spr(97,	xcaisse[0], ycaisse[0])
+	 spr(97,	xcaisse[1], ycaisse[1])
+	 spr(97,	xcaisse[2], ycaisse[2])
+	 spr(97,	xcaisse[3], ycaisse[3])
+	 spr(97,	xcaisse[4], ycaisse[4])
+	
+	-- Grille
+	
+	 if bouton1 == false then
+		 spr(82,	24, 32)
+			xgrille[0] = 24
+		 if x==24 and y==32 then
+		  y=y-8
+			end
+		else xgrille[0] = 0
+	 end
+	
+	 if bouton2 == false then
+		 spr(82,	88, 32)
+			xgrille[1] = 88
+		else xgrille[1] = 0
+	 end
+	
+	 if bouton3 == false then
+		 spr(81,	112, 56)
+			xgrille[2] = 112
+		 if x==112 and y==56 then
+		  x=x-8
+	  end
+		else xgrille[2] = 0
+	 end
+	
+	 if bouton4 == false then
+		 spr(81,	128, 56)
+			xgrille[3] = 128
+		 if x==128 and y==56 then
+		  x=x-8
+	  end
+		else xgrille[3] = 0
+	 end
+	
+	 if bouton5 == false then
+		 spr(81,	176, 56)
+			xgrille[4] = 176
+		 if x==176 and y==56 then
+		  x=x-8
+	  end
+		else xgrille[4] = 0
+	 end
+	end
+	
+	-- Ending
+	
+	if x==192 and y==56 or x==200 and y==56 or x==208 and y==56 or ending == true then
+		cls(0)
+	 print("FELICITATION !",84,50,12)
+		ending = true
+	end
+  
+  
+end
